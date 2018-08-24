@@ -18,7 +18,7 @@ npm.publish:
 	git push origin $(git_branch) && git push --tags
 	npm publish --access public
 
-github.release: export REPOSITORY=kiltjs/trisquel-render
+github.release: export REPOSITORY=triskeljs/render
 github.release: export PKG_VERSION=$(shell node -e "console.log('v'+require('./package.json').version);")
 github.release: export RELEASE_URL=$(shell curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${GITHUB_TOKEN}" \
 	-d '{"tag_name": "${PKG_VERSION}", "target_commitish": "$(git_branch)", "name": "${PKG_VERSION}", "body": "", "draft": false, "prerelease": false}' \

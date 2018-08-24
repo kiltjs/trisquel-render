@@ -1,0 +1,28 @@
+{
+  "name": "@trisquel/render",
+  "version": "0.1.2",
+  "description": "Trisquel HTML renderer app",
+  "main": "render.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kiltjs/trisquel-render.git"
+  },
+  "keywords": [
+    "html",
+    "minify",
+    "minifier"
+  ],
+  "author": "Jesús Germade <jesus@germade.es>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kiltjs/trisquel-render/issues"
+  },
+  "homepage": "https://github.com/kiltjs/trisquel-render#readme",
+  "devDependencies": {
+    "eslint": "5.0.1"
+  },
+  "dependencies": {}
+}

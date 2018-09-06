@@ -50,7 +50,7 @@ function _create(node, _parent, ns_scheme, options, inits_list) {
     else node_el = document.createElement(node.$);
 
     if( node.attrs ) {
-      for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key]);
+      for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](node) : node.attrs[key] );
     }
     if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
     else if( node._ ) node_el.innerHTML = node._;

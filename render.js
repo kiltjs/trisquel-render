@@ -19,7 +19,7 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
     else parent_el.appendChild( node_el );
 
     if( with_node.initNode ) inits_list.push(function () {
-      with_node.initNode.call(node_el, node_el, node, with_node, options);
+      with_node.initNode.call(node_el, node_el, node, options, with_node);
     });
 
     if( !skip_node && options.initNode instanceof Function ) inits_list.push(options.initNode);

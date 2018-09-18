@@ -39,13 +39,5 @@ module.exports = function(config) {
     configuration.concurrency = 1;
   }
 
-  if(process.env.DRONE){
-    configuration.browsers = [ 'Chrome' ];
-  }
-
-  if(process.env.WERCKER){
-    configuration.browsers = [ 'Chrome' ];
-  }
-
   config.set(configuration);
 };

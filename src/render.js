@@ -22,7 +22,7 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
       with_node.initNode.call(node_el, node_el, node, options, with_node);
     });
 
-    if( !skip_node && options.initNode instanceof Function ) inits_list.push(options.initNode);
+    // if( !skip_node && options.initNode instanceof Function ) inits_list.push(options.initNode);
     // if( options.initNode instanceof Function ) options.initNode(node_el, node);
 
     inserted_nodes.push({
@@ -59,7 +59,7 @@ function _create(node, _parent, ns_scheme, options, inits_list) {
   return node_el;
 }
 
-module.exports = function renderNodes (parent, nodes, options) {
+export default function renderNodes (parent, nodes, options) {
   options = Object.create(options || {});
 
   if( typeof options.withNode !== 'function' ) options.withNode = function () {};
@@ -75,4 +75,4 @@ module.exports = function renderNodes (parent, nodes, options) {
   inits_list.forEach(function (initFn) { initFn(); });
 
   return inserted_nodes;
-};
+}

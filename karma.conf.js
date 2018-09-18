@@ -7,13 +7,13 @@ module.exports = function(config) {
     plugins: [
       'karma-mocha',
       'karma-chai',
+      'karma-coverage',
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-story-reporter'
     ],
     files: [
       'dist/render.umd.js',
-      'tests/{,**/}*-test.js',
       'tests/{,**/}*-tests.js',
     ],
     // browsers: [ 'Chrome', 'Firefox' ],
@@ -25,7 +25,13 @@ module.exports = function(config) {
       }
     },
     singleRun: true,
-    reporters: ['story'],
+    reporters: ['story', 'coverage'],
+    preprocessors: {
+      // source files, that you wanna generate coverage for
+      // do not include tests or libraries
+      // (these files will be instrumented by Istanbul)
+      'dist/render.umd.js': ['coverage']
+    },
   };
 
   if(process.env.TRAVIS){

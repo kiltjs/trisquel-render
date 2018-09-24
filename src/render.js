@@ -7,9 +7,7 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
 
   nodes.forEach(function (node) {
 
-    var skip_node = options.skip_init && options.skip_init.indexOf(node) >= 0;
-
-    var with_node = !skip_node && options.withNode(node) ||{};
+    var with_node = options.withNode(node) ||{};
     var node_el;
 
     if( with_node.replace_by_comment ) node_el = document.createComment(with_node.replace_by_comment);
@@ -21,9 +19,6 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
     if( with_node.initNode ) inits_list.push(function () {
       with_node.initNode.call(node_el, node_el, node, options, with_node);
     });
-
-    // if( !skip_node && options.initNode instanceof Function ) inits_list.push(options.initNode);
-    // if( options.initNode instanceof Function ) options.initNode(node_el, node);
 
     inserted_nodes.push({
       el: node_el,

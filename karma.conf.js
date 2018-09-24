@@ -8,6 +8,7 @@ module.exports = function(config) {
       'karma-mocha',
       'karma-chai',
       'karma-coverage',
+      'karma-coveralls',
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-story-reporter'
@@ -25,12 +26,16 @@ module.exports = function(config) {
       }
     },
     singleRun: true,
-    reporters: ['story', 'coverage'],
+    reporters: ['story', 'coverage', 'coveralls'],
     preprocessors: {
       // source files, that you wanna generate coverage for
       // do not include tests or libraries
       // (these files will be instrumented by Istanbul)
       'dist/render.umd.js': ['coverage']
+    },
+    coverageReporter: {
+      type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+      dir: 'coverage/'
     },
   };
 

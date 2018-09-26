@@ -8,6 +8,14 @@ describe('rendering HTML', function () {
     }
   });
 
+  it('render error', function () {
+
+    assert.throws(function () {
+      renderNodes(document.body, [{}]);
+    }, TypeError);
+
+  });
+
   it('render div', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }];
@@ -53,6 +61,30 @@ describe('rendering HTML', function () {
     renderNodes(document.body, [{ $:'div', attrs: { 'class': function () { return 'foo-bar'; } }, _: [{ text: 'foobar' }] }]);
 
     assert.strictEqual( document.body.innerHTML, '<div class="foo-bar">foobar</div>' );
+
+  });
+
+  it('rendering mixed text nodes', function () {
+
+    renderNodes(document.body, ['foobar', { $:'div', attrs: { 'class': function () { return 'foo-bar'; } }, _: [{ text: 'foobar' }] }]);
+
+    assert.strictEqual( document.body.innerHTML, 'foobar<div class="foo-bar">foobar</div>' );
+
+  });
+
+  it('rendering comments', function () {
+
+    renderNodes(document.body, ['foobar ', { comments: ' foobar ' }]);
+
+    assert.strictEqual( document.body.innerHTML, 'foobar <!-- foobar -->' );
+
+  });
+
+  it('rendering removing comments', function () {
+
+    renderNodes(document.body, ['foobar ', { comments: ' foobar ' }], { remove_comments: true });
+
+    assert.strictEqual( document.body.innerHTML, 'foobar ' );
 
   });
 

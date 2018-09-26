@@ -7,6 +7,8 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
 
   nodes.forEach(function (node) {
 
+    if( options.remove_comments && node && typeof node === 'object' && 'comments' in node ) return;
+
     var with_node = options.withNode(node) ||{};
     var node_el;
 
@@ -39,17 +41,22 @@ var ns_tags = {
 
 function _create(node, _parent, ns_scheme, options, inits_list) {
   var node_el;
-  if( node.$ ) {
-    ns_scheme = ns_scheme || ns_tags[node.$];
-    if( ns_scheme ) node_el = document.createElementNS(ns_scheme, node.$);
-    else node_el = document.createElement(node.$);
 
-    if( node.attrs ) {
-      for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
-    }
-    if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
-    else if( node._ ) node_el.innerHTML = node._;
-  } else if( node.text ) return document.createTextNode(node.text);
+  if( typeof node === 'string' ) return document.createTextNode(node);
+  if( 'text' in node ) return document.createTextNode(node.text);
+  if( 'comments' in node ) return document.createComment(node.comments);
+
+  if( !node.$ ) throw new TypeError('unknown node format');
+
+  ns_scheme = ns_scheme || ns_tags[node.$];
+  if( ns_scheme ) node_el = document.createElementNS(ns_scheme, node.$);
+  else node_el = document.createElement(node.$);
+
+  if( node.attrs ) {
+    for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
+  }
+  if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
+  else if( node._ ) node_el.innerHTML = node._;
 
   return node_el;
 }

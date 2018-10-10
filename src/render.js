@@ -55,8 +55,8 @@ function _create(node, _parent, ns_scheme, options, inits_list) {
   if( node.attrs ) {
     for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
   }
-  if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
-  else if( node._ ) node_el.innerHTML = node._;
+
+  _appendChildren(node_el, node._ instanceof Array ? node._ : [node._], ns_scheme, options, inits_list);
 
   return node_el;
 }

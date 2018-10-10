@@ -64,10 +64,6 @@
 
     if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [{ text: node._ }], ns_scheme, options, inits_list);
 
-    // if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
-    // // else if( node._ ) node_el.innerHTML = node._;
-    // else if( node._ ) _appendChildren(node_el, [node._], ns_scheme, options, inits_list);
-
     return node_el;
   }
 

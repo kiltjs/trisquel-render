@@ -8,13 +8,14 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
 
   nodes.forEach(function (node) {
 
+    if( typeof node === 'string' ) node = { text: node };
     if( options.remove_comments && node && typeof node === 'object' && 'comments' in node ) return;
 
     var with_node = options.withNode(node) ||{};
     var node_el;
 
     if( with_node.replace_by_comment ) node_el = document.createComment(with_node.replace_by_comment);
-    else node_el = _create(node, parent_el, ns_scheme, options, inits_list);
+    else node_el = _create(node, parent_el, ns_scheme, options, inits_list, with_node.replace_text);
 
     if( insert_before ) parent_el.insertBefore(node_el, insert_before);
     else parent_el.appendChild( node_el );
@@ -40,12 +41,12 @@ var ns_tags = {
   xul: 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',
 };
 
-function _create(node, _parent, ns_scheme, options, inits_list) {
+function _create(node, _parent, ns_scheme, options, inits_list, replace_text) {
   var node_el;
 
   // if( typeof node === 'string' ) return _create({ text: node }, _parent, ns_scheme, options, inits_list);
-  if( typeof node === 'string' ) return document.createTextNode(node);
-  if( 'text' in node ) return document.createTextNode(node.text);
+  // if( typeof node === 'string' ) return document.createTextNode( replace_text === undefined ? node : replace_text );
+  if( 'text' in node ) return document.createTextNode( replace_text === undefined ? node.text : replace_text );
   if( 'comments' in node ) return document.createComment(node.comments);
 
   if( !node.$ ) throw new TypeError('unknown node format');
@@ -58,7 +59,7 @@ function _create(node, _parent, ns_scheme, options, inits_list) {
     for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
   }
 
-  if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [{ text: node._ }], ns_scheme, options, inits_list);
+  if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [node._], ns_scheme, options, inits_list);
 
   return node_el;
 }

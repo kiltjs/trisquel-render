@@ -120,6 +120,38 @@ describe('rendering HTML', function () {
 
   });
 
+  it('withNode (text -clear-)', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, { $:'div', attrs: { 'data-if': ' foo === bar ' }, _: 'foobar' }];
+
+    renderNodes(document.body, html_nodes, {
+      withNode: function (node) {
+        if( 'text' in node ) return {
+          replace_text: '',
+        };
+      },
+    });
+
+    assert.strictEqual( document.body.innerHTML, '<div class="foo-bar"></div><div data-if=" foo === bar "></div>' );
+
+  });
+
+  it('withNode (text -clear-)', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, 'foobar', { $:'div', attrs: { 'data-if': ' foo === bar ' }, _: 'foobar' }];
+
+    renderNodes(document.body, html_nodes, {
+      withNode: function (node) {
+        if( 'text' in node ) return {
+          replace_text: '',
+        };
+      },
+    });
+
+    assert.strictEqual( document.body.innerHTML, '<div class="foo-bar"></div><div data-if=" foo === bar "></div>' );
+
+  });
+
   it('initNode', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, { $:'div', attrs: { 'data-if': ' foo === bar ' }, _: 'foobar' }],

@@ -47,6 +47,7 @@
   function _create(node, _parent, ns_scheme, options, inits_list) {
     var node_el;
 
+    // if( typeof node === 'string' ) return _create({ text: node }, _parent, ns_scheme, options, inits_list);
     if( typeof node === 'string' ) return document.createTextNode(node);
     if( 'text' in node ) return document.createTextNode(node.text);
     if( 'comments' in node ) return document.createComment(node.comments);
@@ -60,8 +61,12 @@
     if( node.attrs ) {
       for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
     }
-    if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
-    else if( node._ ) node_el.innerHTML = node._;
+
+    if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [{ text: node._ }], ns_scheme, options, inits_list);
+
+    // if( node._ instanceof Array ) _appendChildren(node_el, node._, ns_scheme, options, inits_list);
+    // // else if( node._ ) node_el.innerHTML = node._;
+    // else if( node._ ) _appendChildren(node_el, [node._], ns_scheme, options, inits_list);
 
     return node_el;
   }

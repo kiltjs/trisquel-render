@@ -104,6 +104,22 @@ describe('rendering HTML', function () {
 
   });
 
+  it('withNode (text)', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, { $:'div', attrs: { 'data-if': ' foo === bar ' }, _: 'foobar' }];
+
+    renderNodes(document.body, html_nodes, {
+      withNode: function (node) {
+        if( 'text' in node ) return {
+          replace_by_comment: ' ' + node.text + ' ',
+        };
+      },
+    });
+
+    assert.strictEqual( document.body.innerHTML, '<div class="foo-bar"><!-- foobar --></div><div data-if=" foo === bar "><!-- foobar --></div>' );
+
+  });
+
   it('initNode', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, { $:'div', attrs: { 'data-if': ' foo === bar ' }, _: 'foobar' }],

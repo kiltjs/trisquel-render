@@ -42,6 +42,7 @@ var ns_tags = {
 function _create(node, _parent, ns_scheme, options, inits_list) {
   var node_el;
 
+  // if( typeof node === 'string' ) return _create({ text: node }, _parent, ns_scheme, options, inits_list);
   if( typeof node === 'string' ) return document.createTextNode(node);
   if( 'text' in node ) return document.createTextNode(node.text);
   if( 'comments' in node ) return document.createComment(node.comments);
@@ -56,7 +57,7 @@ function _create(node, _parent, ns_scheme, options, inits_list) {
     for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
   }
 
-  _appendChildren(node_el, node._ instanceof Array ? node._ : [node._], ns_scheme, options, inits_list);
+  if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [{ text: node._ }], ns_scheme, options, inits_list);
 
   return node_el;
 }

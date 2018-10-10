@@ -44,8 +44,6 @@ var ns_tags = {
 function _create(node, _parent, ns_scheme, options, inits_list, replace_text) {
   var node_el;
 
-  // if( typeof node === 'string' ) return _create({ text: node }, _parent, ns_scheme, options, inits_list);
-  // if( typeof node === 'string' ) return document.createTextNode( replace_text === undefined ? node : replace_text );
   if( 'text' in node ) return document.createTextNode( replace_text === undefined ? node.text : replace_text );
   if( 'comments' in node ) return document.createComment(node.comments);
 

@@ -1,6 +1,6 @@
 {
   "name": "@triskel/render",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "triskel HTML renderer app",
   "main": "dist/render.cjs.js",
   "scripts": {

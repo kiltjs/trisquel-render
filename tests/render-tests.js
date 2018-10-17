@@ -173,6 +173,31 @@ describe('rendering HTML', function () {
 
   });
 
+  it('onCreate', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }],
+        is_created = false,
+        is_rendered = false;
+
+    renderNodes(document.body, html_nodes, {
+      withNode: function (node) {
+        if( 'text' in node ) return {
+          onCreate: function () {
+            assert.strictEqual(is_created, false, 'onCreate: is_created');
+            assert.strictEqual(is_rendered, false, 'onCreate: is_rendered');
+            is_created = true;
+          },
+          initNode: function () {
+            assert.strictEqual(is_created, true, 'initNode: is_created');
+            assert.strictEqual(is_rendered, false, 'initNode: is_rendered');
+            is_rendered = true;
+          },
+        };
+      },
+    });
+
+  });
+
   it('insert_before', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }, { $:'div', attrs: { 'insert-before': ' me ' }, _: 'foobar' }],

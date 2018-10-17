@@ -21,6 +21,8 @@
       if( with_node.replace_by_comment ) node_el = document.createComment(with_node.replace_by_comment);
       else node_el = _create(node, parent_el, ns_scheme, options, inits_list, with_node.replace_text);
 
+      if( with_node.onCreate instanceof Function ) with_node.onCreate.call(node_el, node_el, node, options, with_node);
+
       if( insert_before ) parent_el.insertBefore(node_el, insert_before);
       else parent_el.appendChild( node_el );
 

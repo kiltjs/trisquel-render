@@ -1,5 +1,5 @@
 
-function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
+function _appendChildren (parent_el, nodes, ns_scheme, options, _withNode, inits_list) {
   var inserted_nodes = [],
       insert_before = options.insert_before;
 
@@ -10,11 +10,11 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, inits_list) {
     if( typeof node === 'string' ) node = { text: node };
     if( options.remove_comments && node && typeof node === 'object' && 'comments' in node ) return;
 
-    var with_node = options.withNode(node) ||{};
+    var with_node = _withNode(node) ||{};
     var node_el;
 
     if( with_node.replace_by_comment ) node_el = document.createComment(with_node.replace_by_comment);
-    else node_el = _create(node, parent_el, ns_scheme, options, inits_list, with_node.replace_text);
+    else node_el = _create(node, parent_el, ns_scheme, options, _withNode, inits_list, with_node.replace_text);
 
     if( with_node.onCreate instanceof Function ) with_node.onCreate.call(node_el, node_el, node, options, with_node);
 
@@ -42,7 +42,7 @@ var ns_tags = {
   xul: 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',
 };
 
-function _create(node, _parent, ns_scheme, options, inits_list, replace_text) {
+function _create(node, _parent, ns_scheme, options, _withNode, inits_list, replace_text) {
   var node_el;
 
   if( 'text' in node ) return document.createTextNode( replace_text === undefined ? node.text : replace_text );
@@ -58,13 +58,16 @@ function _create(node, _parent, ns_scheme, options, inits_list, replace_text) {
     for( var key in node.attrs ) node_el.setAttribute(key, node.attrs[key] instanceof Function ? node.attrs[key](options, node) : node.attrs[key] );
   }
 
-  if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [node._], ns_scheme, options, inits_list);
+  if( '_' in node ) _appendChildren(node_el, node._ instanceof Array ? node._ : [node._], ns_scheme, options, _withNode, inits_list);
 
   return node_el;
 }
 
 export default function renderNodes (parent, nodes, options) {
   options = Object.create(options || {});
+  var _withNode = options.withNode || function () {};
+
+  options.withNode = null;
 
   if( typeof options.withNode !== 'function' ) options.withNode = function () {};
 
@@ -74,7 +77,7 @@ export default function renderNodes (parent, nodes, options) {
   }
 
   var inits_list = [],
-      inserted_nodes = _appendChildren(parent, nodes, null, options, inits_list);
+      inserted_nodes = _appendChildren(parent, nodes, null, options, _withNode, inits_list);
 
   inits_list.forEach(function (initFn) { initFn(); });
 

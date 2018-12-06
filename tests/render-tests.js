@@ -16,6 +16,14 @@ describe('rendering HTML', function () {
 
   })
 
+  it('empty render', function () {
+
+    renderNodes(document.body, [])
+
+    assert.strictEqual( document.body.innerHTML, '' )
+
+  })
+
   it('render div', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }]

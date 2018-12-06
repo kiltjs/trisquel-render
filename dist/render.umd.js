@@ -82,7 +82,9 @@
       parent_el.removeChild(parent_el.firstChild);
     }
 
-    var _dom_fragment = nodes.length && document.createDocumentFragment();
+    if( !nodes.length ) return []
+
+    var _dom_fragment = document.createDocumentFragment();
 
     var inits_list = [],
         inserted_nodes = _appendChildren(_dom_fragment, nodes, null, options, _withNode, inits_list);

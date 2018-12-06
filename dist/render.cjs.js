@@ -6,7 +6,7 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, _withNode, inits
 
   options.insert_before = null;
 
-  var _dom_fragment = document.createDocumentFragment();
+  var _dom_fragment = nodes.length && document.createDocumentFragment();
 
   for( var i = 0, n = nodes.length, node ; i < n ; i++ ) {
     node = nodes[i];
@@ -24,9 +24,9 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, _withNode, inits
 
     if( with_node.onCreate instanceof Function ) with_node.onCreate.call(node_el, node_el, node, options, with_node);
 
-    // if( insert_before ) parent_el.insertBefore(node_el, insert_before)
-    // else parent_el.appendChild( node_el )
-    _dom_fragment.appendChild(node_el);
+    if( _dom_fragment ) _dom_fragment.appendChild(node_el);
+    else if( insert_before ) parent_el.insertBefore(node_el, insert_before);
+    else parent_el.appendChild( node_el );
 
     // if( with_node.initNode ) inits_list.push(function () {
     //   with_node.initNode.call(node_el, node_el, node, options, with_node)
@@ -45,6 +45,7 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, _withNode, inits
 
   }
   // })
+  if( !_dom_fragment ) return inserted_nodes
 
   if( insert_before ) parent_el.insertBefore(_dom_fragment, insert_before);
   else parent_el.appendChild(_dom_fragment);

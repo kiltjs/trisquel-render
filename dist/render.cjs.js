@@ -28,8 +28,13 @@ function _appendChildren (parent_el, nodes, ns_scheme, options, _withNode, inits
     // else parent_el.appendChild( node_el )
     _dom_fragment.appendChild(node_el);
 
-    if( with_node.initNode ) inits_list.push(function () {
-      with_node.initNode.call(node_el, node_el, node, options, with_node);
+    // if( with_node.initNode ) inits_list.push(function () {
+    //   with_node.initNode.call(node_el, node_el, node, options, with_node)
+    // })
+    if( with_node.initNode ) inits_list.push({
+      fn: with_node.initNode,
+      _this: node_el,
+      _args: [node_el, node, options, with_node]
     });
 
     inserted_nodes.push({
@@ -74,7 +79,7 @@ function _create(node, _parent, ns_scheme, options, _withNode, inits_list, repla
   return node_el
 }
 
-function _runInits (initFn) { initFn(); }
+function _runInits (init_node) { init_node.fn.apply(init_node._this, init_node._args); }
 
 function renderNodes (parent, nodes, options) {
   options = Object.create(options || {});

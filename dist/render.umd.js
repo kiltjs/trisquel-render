@@ -71,11 +71,7 @@
 
   function renderNodes (parent_el, nodes, options) {
     options = Object.create(options || {});
-    var _withNode = options.withNode || function () {};
-
-    options.withNode = null;
-
-    if( typeof options.withNode !== 'function' ) options.withNode = function () {};
+    var _withNode = options.withNode || function __withNode () {};
 
     if( !options.insert_before && options.keep_content !== true ) {
       while( parent_el.firstChild )

@@ -67,8 +67,12 @@ function _runInits (init_node) { init_node.fn.apply(init_node._this, init_node._
 export default function renderNodes (parent_el, nodes, options) {
   options = Object.create(options || {})
   var _withNode = options.withNode || function __withNode () {}
+  var _insert_before = options.insert_before
 
-  if( !options.insert_before && options.keep_content !== true ) {
+  options.withNode = null
+  options.insert_before = null
+
+  if( !_insert_before && options.keep_content !== true ) {
     while( parent_el.firstChild )
     parent_el.removeChild(parent_el.firstChild)
   }
@@ -80,7 +84,7 @@ export default function renderNodes (parent_el, nodes, options) {
   var inits_list = [],
       inserted_nodes = _appendChildren(_dom_fragment, nodes, null, options, _withNode, inits_list)
 
-  if( options.insert_before ) parent_el.insertBefore(_dom_fragment, options.insert_before)
+  if( _insert_before ) parent_el.insertBefore(_dom_fragment, _insert_before)
   else parent_el.appendChild(_dom_fragment)
 
   inits_list.forEach(_runInits)

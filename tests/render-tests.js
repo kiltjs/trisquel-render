@@ -24,6 +24,30 @@ describe('rendering HTML', function () {
 
   })
 
+  it('render Function attr', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar', foo: function () {
+      return 'bar'
+    } }, _: 'foobar' }]
+
+    renderNodes(document.body, html_nodes)
+
+    assert.strictEqual( document.body.innerHTML, '<div class="foo-bar" foo="bar">foobar</div>' )
+
+  })
+
+  it('render Function attr: null', function () {
+
+    var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar', foo: function () {
+      return null
+    } }, _: 'foobar' }]
+
+    renderNodes(document.body, html_nodes)
+
+    assert.strictEqual( document.body.innerHTML, '<div class="foo-bar">foobar</div>' )
+
+  })
+
   it('render div', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: 'foobar' }]

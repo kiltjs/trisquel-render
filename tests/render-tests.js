@@ -62,6 +62,20 @@ describe('rendering HTML', function () {
 
   })
 
+  it('render several p', function () {
+
+    var html_nodes = [
+      { $: 'p', _: 'Lorem ipsum...' },
+      { $: 'p', _: 'dolor sit...' },
+      { $: 'p', _: 'amet...' },
+    ]
+
+    renderNodes(document.body, html_nodes)
+
+    assert.strictEqual( document.body.innerHTML, '<p>Lorem ipsum...</p><p>dolor sit...</p><p>amet...</p>' )
+
+  })
+
   it('render svg', function () {
 
     var html_nodes = [{ $:'div', attrs: { 'class': 'foo-bar' }, _: [
